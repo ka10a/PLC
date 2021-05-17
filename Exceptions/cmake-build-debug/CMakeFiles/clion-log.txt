@@ -1,0 +1,4 @@
+/home/imroggen/clion-2020.2.4/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/bin/g++ -G "CodeBlocks - Unix Makefiles" /home/imroggen/CLionProjects/PLC/Exceptions
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/imroggen/CLionProjects/PLC/Exceptions/cmake-build-debug

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/imroggen/CLionProjects/PLC/Exceptions/main.cpp
+vector
+-
+string
+-
+csetjmp
+-
+iostream
+-
+
