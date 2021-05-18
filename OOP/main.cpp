@@ -6,17 +6,19 @@
 struct BaseHuman;
 struct DerivedDog;
 
+template<class T>
 struct Vtable {
-    std::map<std::string, std::function<void(void*)>> vtable;
+    std::map<std::string, std::function<void(T*)>> vtable;
 };
 
-#define VIRTUAL_CLASS(BaseName) Vtable Vtable##BaseName; struct BaseName{ Vtable* VTable = &Vtable##BaseName;
+#define VIRTUAL_CLASS(BaseName) struct BaseName; \
+Vtable<BaseName> Vtable##BaseName; struct BaseName{ Vtable<BaseName>* VTable = &Vtable##BaseName;
 
 #define END };
 
-#define DECLARE_METHOD(Class, Name) void Name##Class(void* self); \
+#define DECLARE_METHOD(Class, Name) void Name##Class(Class* self); \
 struct Help##Name##Class{Help##Name##Class(){ Vtable##Class.vtable[#Name] = Name##Class; }} help##Name##Class; \
-void Name##Class(void* self)
+void Name##Class(Class* self)
 
 #define VIRTUAL_CALL(Object, FunctionName) Object->VTable->vtable[#FunctionName](Object);
 
@@ -24,12 +26,13 @@ VIRTUAL_CLASS(BaseHuman)
     int age;
     std::string speech;
 END
+
 DECLARE_METHOD(BaseHuman, Both) {
-    int a = reinterpret_cast<BaseHuman*>(self)->age;
+    int a = self->age;
     std::cout << "Human::Both age = " << a << "\n";
 }
 DECLARE_METHOD(BaseHuman, OnlyBase) {
-    std::string s = reinterpret_cast<BaseHuman*>(self)->speech;
+    std::string s = self->speech;
     std::cout << "Human::OnlyHuman speech = " << s << "\n";
 }
 
@@ -38,11 +41,11 @@ VIRTUAL_CLASS(DerivedDog)
     std::string breed;
 END
 DECLARE_METHOD(DerivedDog, Both) {
-    int a = reinterpret_cast<DerivedDog*>(self)->age;
+    int a = self->age;
     std::cout << "DerivedDog::Both age = " << a << "\n";
 }
 DECLARE_METHOD(DerivedDog, OnlyDerived) {
-    std::string b = reinterpret_cast<DerivedDog*>(self)->breed;
+    std::string b = self->breed;
     std::cout << "DerivedDog::OnlyDog breed = " << b << "\n";
 }
 
